@@ -12,3 +12,5 @@ fields:
     display_utc: false
   label: Created
   default: now
+pages:
+- posts/finite-state-machines-and-js.md
