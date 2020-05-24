@@ -1,4 +1,14 @@
 ---
 label: Blog Post
 hide_body: false
-fields: []
+fields:
+- name: created
+  type: datetime
+  description: When was this post created
+  config:
+    required: true
+    date_format: 
+    time_format: 
+    display_utc: false
+  label: Created
+  default: now
