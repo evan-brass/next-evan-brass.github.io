@@ -11,7 +11,7 @@ A finite state machine has different states that it transitions between and it c
 The arrow into the Pending state tells us that this is the initial state. What makes a promise a promise is conforming to the promise protocol, you can find it here: [https://promisesaplus.com/](https://promisesaplus.com/ "https://promisesaplus.com/"). In short, a promise has a _then_ method that registers callbacks for when the promise either resolves or rejects. The await keyword calls that _then_ method under the hood so if you want to make something await-able, you need to have a valid _then_ method. Or at least valid enough — await doesn’t care if your _then_ method returns a promise.
 
 Back to the point, let’s look at a simple async function:
-
+```javascript
     function delay(ms) {
     	return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -22,6 +22,7 @@ Back to the point, let’s look at a simple async function:
     	await delay('1000'); // State 2
     	console.log('Transition 3');
     }
+```
 
 If we draw a state diagram for this code we would get this:
 
@@ -29,13 +30,13 @@ If we draw a state diagram for this code we would get this:
 
 Here’s the recipe for constructing the state diagram for an async function:
 
-1. Every async function’s state diagram starts with three states: State 0, Resolved, and Rejected. **<Edit>** S̶i̶n̶c̶e̶ ̶P̶r̶o̶m̶i̶s̶e̶s̶ ̶r̶u̶n̶ ̶i̶n̶ ̶a̶ ̶m̶i̶c̶r̶o̶t̶a̶s̶k̶ ̶t̶h̶e̶r̶e̶ ̶i̶s̶ ̶a̶ ̶l̶i̶t̶t̶l̶e̶ ̶b̶i̶t̶ ̶o̶f̶ ̶t̶i̶m̶e̶ ̶b̶e̶t̶w̶e̶e̶n̶ ̶t̶h̶e̶ ̶a̶s̶y̶n̶c̶ ̶f̶u̶n̶c̶t̶i̶o̶n̶ ̶b̶e̶i̶n̶g̶ ̶c̶a̶l̶l̶e̶d̶ ̶(̶c̶r̶e̶a̶t̶i̶n̶g̶ ̶t̶h̶e̶ ̶p̶r̶o̶m̶i̶s̶e̶)̶ ̶a̶n̶d̶ ̶t̶h̶e̶ ̶s̶t̶a̶r̶t̶ ̶o̶f̶ ̶i̶t̶’̶s̶ ̶c̶o̶d̶e̶ ̶r̶u̶n̶n̶i̶n̶g̶.̶ (Promises actually run eagerly, so there is no state 0. I misunderstood the difference between methods registered with then which are always called asyncronously using microtasks and the promise code itself. I apologize.)**</Edit>** The Resolved and Rejected states come from the function returning a Promise but in some async functions they might not be reachable (as is the case for the Rejected state in the example above).
+1. Every async function’s state diagram starts with three states: State 0, Resolved, and Rejected. **<Edit>** ~~Since Promises run in a microtask there is a little bit of time between the async function being called (creating the promise) and the start of it’s code running.~~ (Promises actually run eagerly, so there is no state 0. I misunderstood the difference between methods registered with then which are always called asyncronously using microtasks and the promise code itself. I apologize.)**</Edit>** The Resolved and Rejected states come from the function returning a Promise but in some async functions they might not be reachable (as is the case for the Rejected state in the example above).
 2. Find the rest of the states by looking for the await keyword. “An await is a state.” In most cases they will be on their own line to avoid confusion like this: [https://twitter.com/jaffathecake/status/999700556607377410](https://twitter.com/jaffathecake/status/999700556607377410 "https://twitter.com/jaffathecake/status/999700556607377410").
 3. Next find the transitions by looking at all the code between those awaits. This linear example is pretty easy — the transitions are the lines before, between, and after the await lines, but if you have loops with breaks, continues, and named loops… it can be more difficult to keep track of what states can transition to which other states.
 4. Lastly, circle all the states that aren’t Resolved and Rejected and call that Pending. From the outside world, we can only see the original Promise states. The callbacks we register are only called when the async function transitions to Resolved or Rejected.
 
 This last step shows us that we can have a state-machine within another state-machine. Our async function is running within a Promise. Sub state machines are the basis for managing complexity in our state machines. As a system grows in complexity you can start grouping states implemented in other async functions. You may also find that two machines should actually run in parallel. Managing those is often where you will want to use the Promise combinators ([https://v8.dev/features/promise-combinators](https://v8.dev/features/promise-combinators "https://v8.dev/features/promise-combinators")). Here’s an example that uses the Promise.all combinator:
-
+```javascript
     function getImage(url) {
     	return new Promise((resolve, reject) => {
     		const image = new Image();
@@ -53,6 +54,7 @@ This last step shows us that we can have a state-machine within another state-ma
     	}));
     	return convertedImages;
     }
+```
 
 And its state diagram:
 
@@ -63,7 +65,7 @@ Each of the sub state machines operate in parallel. The fetch and JSON conversio
 DOM Nodes are finite state machines that predate Promises and in the coming era of custom-elements and more fundamental browser APIs I think it’s important to show that a state machine pattern or library can communicate well with its surroundings. To do that for async functions, we’ll need to convert anything that would normally interact via callback into something that is then-able. You’ve already seen this process in the delay function from the first example. Next we’ll need to have a good way of reacting to property changes easily. Lastly, we’ll want to switch from yield to using the browser’s native language for conveying state transitions: events.
 
 First is listening to outside events. This is a fairly simple process. You may be able to think of a better way of doing this but here’s my implementation:
-
+```javascript
     function listenOnce(el, event) {
     	return new Promise(resolve => el.addEventListener(event, resolve, {once: true}));
     }
@@ -91,11 +93,12 @@ First is listening to outside events. This is a fairly simple process. You may b
     		el.removeEventListener(event, handler);
     	}
     }
+```
 
 You can see my not quite conforming differed implementation above. These two functions will let you either await a single event being fired (a button click for example) or iterating over multiple events (perhaps the input event on an input element).
 
 What about properties? I was doing some Android development and learned about the LiveData class which is fairly easy to implement in JavaScript.
-
+```javascript
     class LiveData {
     	constructor() {
     		this.waiters = [];
@@ -124,6 +127,7 @@ What about properties? I was doing some Android development and learned about th
     		}
     	}
     }
+```
 
 This class let’s you iterate over a value that can change. It makes sure that you have the most up to date value even if you don’t request the next value immediately. To make it back into a property would take a setter / getter pair on the object that you want the property on.
 
@@ -134,7 +138,7 @@ There’s one kind of input that isn’t easy to make async: abort or cancellati
 **EDIT:** The new method of handling this — as standardized for use with the fetch api — is using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) and paired AbortSignal. The promise from a fetch request that is aborted throws an AbortError. If your operation can be aborted, then you need to accept an AbortSignal. If you operate on any cancelable sub-operations, you can just pass that signal down to them. The should throw an AbortError waking you back up. If you are waiting on a non-abortable promise then you’ll have trouble. One method of getting around that is to wrap the promise that doesn’t abort in one that will abort when the signal issues the abort event. I’ve made my own version of this here: [https://github.com/evan-brass/js-min/blob/master/src/cancellation/wrap-signal.mjs](https://github.com/evan-brass/js-min/blob/master/src/cancellation/wrap-signal.mjs "https://github.com/evan-brass/js-min/blob/master/src/cancellation/wrap-signal.mjs") As always, concurrency is a complicated problem that introduces many different failure modes. Handling all of those without strong type enforcement is difficult. AbortController seems to be the direction that the language is going so it’s good to get ready for it.
 
 What this means is that if you need something that is cancelable, you either have to be really careful and use something like Promise.race with your cancel differed and then do some cleanup perhaps using the [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort) or you can use something that can be cancelled: generators. Iterators have a return method which when implemented by a generator acts as though the statement after the previous yield was a return statement. The only code that can run after a return statement is a finally block. If you’re writing an async generator then the return function will only take effect at the next yield so you have to keep yielding to check if you’ve been cancelled. To make it fully cancelable we can’t use await which means sticking to a normal generator. To then make it async we can yield the promise we would have awaited and then the caller has to call next with the value that the promise resolved with or call throw if the promise threw an error. I’ll show you my implementation for a simple cancelable setup. You can find another example of this technique (it does a slightly different thing) here: [https://dev.to/chromiumdev/cancellable-async-functions-in-javascript-5gp7](https://dev.to/chromiumdev/cancellable-async-functions-in-javascript-5gp7 "https://dev.to/chromiumdev/cancellable-async-functions-in-javascript-5gp7")
-
+```javascript
     function cancelable(instance) {
     	const result = (async () => {
     		let step = instance.next();
@@ -155,14 +159,14 @@ What this means is that if you need something that is cancelable, you either hav
     	result.cancel = () => instance.return();
     	return result;
     }
+```
 
 What this is doing is taking an iterator that yields promises (the ones that it otherwise would have awaited) and then awaits the promises for the generator feeding the result back in later (including errors that might be thrown by the promise).
 
 **EDIT:** This is also similar to Bluebird coroutines which I didn’t know about at the time: [http://bluebirdjs.com/docs/api/promise.coroutine.html](http://bluebirdjs.com/docs/api/promise.coroutine.html "http://bluebirdjs.com/docs/api/promise.coroutine.html")
 
 You might use it like this:
-
-    
+```javascript
     function* testHelper() {
     	console.log('Entering Helper');
     	yield delay(1000); // State H-1
@@ -186,6 +190,7 @@ You might use it like this:
     const a = cancelable(test());
     a.then(result => console.log('cancelable resolved with', result));
     // a.cancel() to cancel the machine at any time
+```
 
 Thinking about this approach, it’s quite like the Futures implementation in Rust. In Rust a Future is polled and when it can no longer proceed it makes sure that something will tell the runtime to wake up the future by polling it again. In our case, the runtime is the cancellable and when the promise resolves it knows that it can resume that generator. This takes care of the cancellability problem and as you can see, you can even have async code in the finally block meaning that you can do async tasks during cleanup.
 
