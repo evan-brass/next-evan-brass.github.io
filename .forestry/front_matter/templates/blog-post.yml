@@ -25,5 +25,10 @@ fields:
   label: Draft
   description: Flip this toggle to on to publish this page / post.
   default: false
+- name: tags
+  type: tag_list
+  default: []
+  label: Tags
+  description: Tag this post with some descriptive keywords.
 pages:
 - posts/finite-state-machines-and-js.md
