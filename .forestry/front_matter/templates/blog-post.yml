@@ -3,6 +3,14 @@ label: Blog Post
 hide_body: false
 display_field: title
 fields:
+- name: title
+  type: text
+  config:
+    required: true
+    min: 1
+    max: 40
+  label: Title
+  description: The title of this page / post
 - name: date
   type: datetime
   description: Date that this post was created.
@@ -13,14 +21,6 @@ fields:
     display_utc: false
   label: Created
   default: now
-- name: title
-  type: text
-  config:
-    required: true
-    min: 1
-    max: 40
-  label: Title
-  description: The title of this page / post
 - name: draft
   type: boolean
   label: Draft
