@@ -31,6 +31,18 @@ fields:
   default: []
   label: Tags
   description: Tag this post with some descriptive keywords.
+- name: canonical
+  type: text
+  config:
+    required: false
+  label: Canonical URL
+  description: If this is not the original / primary copy of this content, then set
+    this to a url of the canonical copy.
+- name: alternate
+  type: tag_list
+  default: []
+  label: Alternate URLs
+  description: Use this to link to any alternate copies of this content.
 pages:
 - content/posts/distributed-web-applications.md
 - content/posts/introduction-to-programming-1-background.md
