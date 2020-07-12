@@ -1,6 +1,6 @@
 ---
 title: Finite State Machines and JavaScript
-created: '2019-07-24T07:00:00Z'
+date: '2019-07-24T07:00:00Z'
 draft: true
 tags:
 - JavaScript
