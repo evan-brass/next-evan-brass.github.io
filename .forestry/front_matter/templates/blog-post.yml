@@ -31,3 +31,5 @@ fields:
   default: []
   label: Tags
   description: Tag this post with some descriptive keywords.
+pages:
+- content/posts/introduction-to-programming-1-background.md
