@@ -31,5 +31,3 @@ fields:
   default: []
   label: Tags
   description: Tag this post with some descriptive keywords.
-pages:
-- posts/finite-state-machines-and-js.md
