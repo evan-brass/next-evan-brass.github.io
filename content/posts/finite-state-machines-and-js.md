@@ -1,6 +1,7 @@
 ---
+title: "Finite State Machines and JavaScript"
 created: 2019-07-24T18:17:41Z
-
+draft: true
 ---
 Writing correct software is hard. Whether you’re using functional programming or finite state machines, understanding the problem you’re solving and understanding your code are both required for correctness. Async functions and generators are stateful syntax for which we can draw state diagrams so that we can understand them. If you know how to break your problem down into a finite state machine then this will show you one way of implementing it as well. Deciding whether doing so would be ergonomic for you and meet your requirements is something you will hopefully be able to do by the end. If it wouldn’t be then maybe you’ll see a path that would make it viable.
 

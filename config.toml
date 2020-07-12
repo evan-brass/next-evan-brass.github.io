@@ -1,0 +1,5 @@
+baseURL = "evan-brass.github.io/"
+languageCode = "en-us"
+title = "Evan Brass - Web Developer"
+theme = "starter"
+disableLiveReload = true
