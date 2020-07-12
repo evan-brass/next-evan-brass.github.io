@@ -7,7 +7,7 @@ Writing correct software is hard. Whether you’re using functional programming 
 
 A finite state machine has different states that it transitions between and it can only be in one state at a time. A Promise has three possible states: pending, resolved, and rejected. For finite state machines we can draw a state diagram that has circles for the states and arrows describing transitions between those states. A state diagram for a Promise would look like this:
 
-![](/uploads/1-_dax9xx_a0tfqkquocygmg.jpeg)
+![](/media/1-_dax9xx_a0tfqkquocygmg.jpeg)
 
 The arrow into the Pending state tells us that this is the initial state. What makes a promise a promise is conforming to the promise protocol, you can find it here: [https://promisesaplus.com/](https://promisesaplus.com/ "https://promisesaplus.com/"). In short, a promise has a _then_ method that registers callbacks for when the promise either resolves or rejects. The await keyword calls that _then_ method under the hood so if you want to make something await-able, you need to have a valid _then_ method. Or at least valid enough — await doesn’t care if your _then_ method returns a promise.
 
@@ -27,7 +27,7 @@ Back to the point, let’s look at a simple async function:
 
 If we draw a state diagram for this code we would get this:
 
-![](/uploads/1-slhuulamosxae6zljajgpg.jpeg)
+![](/media/1-slhuulamosxae6zljajgpg.jpeg)
 
 Here’s the recipe for constructing the state diagram for an async function:
 
@@ -59,7 +59,7 @@ This last step shows us that we can have a state-machine within another state-ma
 
 And its state diagram:
 
-![](/uploads/1-mxvums80pzocz-c-blo5ww.jpeg)
+![](/media/1-mxvums80pzocz-c-blo5ww.jpeg)
 
 Each of the sub state machines operate in parallel. The fetch and JSON conversion could fail resulting in rejecting from the image list fetching state. The image not being able to load can also result in a rejection from the sub async function. As you can see, the resolved and rejected states often feed into one another. Also, Promise.all will reject if any of the sub promises reject but without promise cancellation, the rest of the images would still finish. Promises don’t give you a way to avoid that extra work.
 
@@ -197,7 +197,7 @@ Thinking about this approach, it’s quite like the Futures implementation in Ru
 
 Let’s also draw the state diagram for this setup:
 
-![](/uploads/1-kulqxoit3uocfmf28km5aq.jpeg)
+![](/media/1-kulqxoit3uocfmf28km5aq.jpeg)
 
 I’ve used dashed lines to indicate that a state isn’t actually asyncronous (it is just passed through during a transition). With generators, everything except the yield statements are part of a transition. There’s no state 0 either since next will run the generator synchronously instead of as a microtask.
 
