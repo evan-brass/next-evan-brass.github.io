@@ -24,8 +24,8 @@ fields:
 - name: draft
   type: boolean
   label: Draft
-  description: Flip this toggle to on to publish this page / post.
-  default: false
+  description: Turn this toggle off to publish this post / page.
+  default: true
 - name: tags
   type: tag_list
   default: []
