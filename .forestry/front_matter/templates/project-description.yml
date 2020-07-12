@@ -1,4 +1,46 @@
 ---
 label: Project Description
 hide_body: true
-fields: []
+fields:
+- name: name
+  type: text
+  config:
+    required: true
+  label: Project Name
+  description: What was the project called
+- name: started
+  type: datetime
+  label: Started
+  description: When was the project started
+  config:
+    required: true
+    date_format: 
+    time_format: 
+    display_utc: false
+- name: ended
+  type: datetime
+  label: Ended
+  description: When was the project finished?
+  config:
+    required: false
+    date_format: 
+    time_format: 
+    display_utc: false
+  showOnly:
+    field: completed
+    value: true
+- name: completed
+  type: boolean
+  label: Completed
+  description: Was the project completed?
+- name: description
+  type: textarea
+  default: ''
+  config:
+    required: false
+    wysiwyg: true
+    schema:
+      format: html
+  label: Description
+  description: Short-ish description of what the project was about, technology used,
+    goals, accomplishments, etc.
