@@ -7,8 +7,8 @@ fields:
   type: text
   config:
     required: true
-    min: 1
-    max: 40
+    min: 
+    max: 
   label: Title
   description: The title of this page / post
 - name: date
