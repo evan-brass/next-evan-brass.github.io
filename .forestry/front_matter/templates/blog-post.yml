@@ -2,15 +2,28 @@
 label: Blog Post
 hide_body: false
 fields:
-- name: created
+- name: date
   type: datetime
-  description: When was this post created
+  description: Date that this post was created.
   config:
-    required: true
+    required: false
     date_format: 
     time_format: 
     display_utc: false
   label: Created
   default: now
+- name: title
+  type: text
+  config:
+    required: true
+    min: 1
+    max: 40
+  label: Title
+  description: The title of this page / post
+- name: draft
+  type: boolean
+  label: Draft
+  description: Flip this toggle to on to publish this page / post.
+  default: false
 pages:
 - posts/finite-state-machines-and-js.md
