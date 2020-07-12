@@ -33,3 +33,4 @@ fields:
   description: Tag this post with some descriptive keywords.
 pages:
 - content/posts/introduction-to-programming-1-background.md
+- content/posts/introduction-to-programming-2-getting-started.md
