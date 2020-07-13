@@ -1,10 +1,12 @@
 ---
-date: 2018-07-17T19:31:29Z
+date: 2018-07-17T19:31:29.000+00:00
 draft: true
 tags:
 - JavaScript
 - Tutorial
 title: 'Introduction to Programming 1: Background'
+canonical: ''
+alternate: []
 
 ---
 Programming has its roots in mathematics. Every ([sane](https://esolangs.org/wiki/Three_Star_Programmer)) programming language has an underlying model of computation. Those underlying models have been proven to have equal power, that is that anything which can be done in one can be done in another.
