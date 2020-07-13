@@ -33,7 +33,7 @@ AMP has some really good technology though — technology that takes a long time
 
 Those are valuable pieces, as is the optimization technology that powers the AMP caches. Opening up that cache is very exciting.
 
-Without AMP, there’s currently no other specifications for doing the pre-rendering that AMP viewers are doing. The AMP constraints made that possible and efficient. We’ll see what the future holds.
+Looks like signed HTTP exchanges could let AMP caches serve your site as if it came from your domain.  I'd heard about signed HTTP exchanges because I heard about offline page sharing.  That is, using near field communication, a user could share a page with another device.  The site is secure because the exchange is signed so the domain name is your domain name.  I was interested in this because I thought it could make for a very resilient means of distributing apps that would otherwise be censored.  If user's could spread the app via in person interaction it could pass borders easily and if it used WebRTC and WebPush to build a serverless peer to peer network, then it would be almost unstoppable.  It's cool that there's more uses of this technology than what I'd first thought.
 
 # Plans for the Future
 
